@@ -1,0 +1,6 @@
+[ROCm]
+name=ROCm
+baseurl=https://repo.radeon.com/rocm/centos8/5.2/main
+enabled=1
+gpgcheck=1
+gpgkey=https://repo.radeon.com/rocm/rocm.gpg.key

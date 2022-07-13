@@ -20,7 +20,6 @@ RUN git clone -b llvmorg-12.0.1 https://github.com/llvm/llvm-project.git \
                    -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;libcxx;libcxxabi;libunwind;lld;lldb;openmp;parallel-libs;polly;pstl;mlir;flang;" \
                    -DCMAKE_INSTALL_PREFIX=/opt/llvm12.0.1 \
                    -DLLVM_ENABLE_ASSERTIONS=On \
-                   -DLLVM_ENABLE_CLASSIC_FLANG=ON \
                    ../llvm \
 		&& cmake --build . \
 		&& cmake --install . \

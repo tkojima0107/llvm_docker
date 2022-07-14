@@ -28,7 +28,7 @@ RUN git clone -b llvmorg-12.0.1 https://github.com/llvm/llvm-project.git \
 	&& LD_LIBRARY_PATH=/usr/local/cuda/compat:${LD_LIBRARY_PATH} \
 	   PATH=/opt/llvm12.0.1/bin:${PATH} \
 	   CC=clang CXX=clang++ cmake -Wno-dev -G Ninja -DCMAKE_BUILD_TYPE=Release \
-	   -DCLANG_OPENMP_NVPTX_DEFAULT_ARCH=sm_75 -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES=all \
+	   -DCLANG_OPENMP_NVPTX_DEFAULT_ARCH=sm_80 -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES=all \
 	   -DLLVM_ENABLE_PROJECTS="clang;openmp" ../llvm \
 	   -DCMAKE_INSTALL_PREFIX=./install \
 	&& cmake --build . \

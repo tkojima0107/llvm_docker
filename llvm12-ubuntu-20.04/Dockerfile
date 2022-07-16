@@ -27,8 +27,9 @@ RUN git clone -b llvmorg-12.0.1 https://github.com/llvm/llvm-project.git \
 		&& cd / \
 		&& rm -rf /tmp/llvm-project
 
-RUN echo 'export LD_LIBRARY_PATH=/opt/llvm12.0.1/lib:${LD_LIBRARY_PATH}' >> /etc/profile
-RUN echo 'export PATH=/opt/llvm12.0.1/bin:${PATH}' >> /etc/profile
+RUN echo "/opt/llvm12.0.1/lib" >> /etc/ld.so.conf.d/20-llvm.conf
+RUN ldconfig
+ENV PATH /opt/llvm12.0.1/bin:/opt/rocm/bin:${PATH}
 WORKDIR /root
 
 CMD ["/bin/bash", "--login"]

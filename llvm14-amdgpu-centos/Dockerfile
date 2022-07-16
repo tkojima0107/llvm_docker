@@ -55,8 +55,17 @@ RUN git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
         && find /tmp/llvm-project/omp-build/install -name libomptarget* -exec cp {} /opt/llvm14.0.6/lib/ \; \
 		&& rm -rf /tmp/llvm-project
 
-RUN echo 'export LD_LIBRARY_PATH=/opt/llvm14.0.6/lib:/opt/rocm/lib/:${LD_LIBRARY_PATH}' >> /etc/profile
-RUN echo 'export PATH=/opt/llvm14.0.6/bin:${PATH}' >> /etc/profile
+ENV LD_LIBRARY_PATH=
+RUN echo "/opt/llvm14.0.6/lib" >> /etc/ld.so.conf.d/20-llvm.conf
+RUN { \
+        echo "/opt/rocm/lib"; \
+        echo "/opt/rocm/lib64"; \
+        } >> /etc/ld.so.conf.d/20-rocm.conf
+RUN { \
+        echo "/opt/gcc-12.1.0/lib"; \
+        echo "/opt/gcc-12.1.0/lib64"; \
+        } >> /etc/ld.so.conf.d/10-gcc-12.conf
+RUN ldconfig
+ENV LIBRARY_PATH="/opt/rocm/lib"
+ENV PATH /opt/llvm14.0.6/bin:/opt/rocm/bin:${PATH}
 WORKDIR /root
-
-CMD ["/bin/bash", "--login"]

@@ -40,8 +40,14 @@ RUN git clone -b llvmorg-13.0.1 https://github.com/llvm/llvm-project.git \
 		&& cd / \
 		&& rm -rf /tmp/llvm-project
 
-RUN echo 'export LD_LIBRARY_PATH=/opt/llvm13.0.1/lib:${LD_LIBRARY_PATH}' >> /etc/profile
-RUN echo 'export PATH=/opt/llvm13.0.1/bin:${PATH}' >> /etc/profile
+ENV LD_LIBRARY_PATH=
+RUN echo "/opt/llvm13.0.1/lib" >> /etc/ld.so.conf.d/20-llvm.conf
+RUN { \
+		echo "/opt/gcc-11.3.0/lib"; \
+    	echo "/opt/gcc-11.3.0/lib64"; \
+	} >> /etc/ld.so.conf.d/10-gcc-11.conf
+RUN ldconfig
+ENV PATH /opt/llvm13.0.1/bin:${PATH}
 WORKDIR /root
 
 CMD ["/bin/bash", "--login"]

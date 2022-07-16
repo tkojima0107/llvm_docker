@@ -64,6 +64,9 @@ The following command will tell you which architecture your GPU is:
 $ rocminfo | grep gfx
 ```
 
+## Sample code for OpenMP offloading
+See [openmp_exmaples](openmp_examples)
+
 ## Other images
 * `llvm12-flang-centos`
 LLVM12 with [flang](https://github.com/flang-compiler/flang), a fortran compiler.

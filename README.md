@@ -49,6 +49,7 @@ For running a container,
 docker run -it --device=/dev/kfd --device=/dev/dri --security-opt seccomp=unconfined --group-add video tkojima0107/llvm<VERSION>-amdgpu-<DISTRIBUTION>
 ```
 
+For compiling an application,
 ```
 clang++ -O3 -Xopenmp-target=amdgcn-amd-amdhsa -march=<GPU ARCH> -fopenmp -fopenmp-targets=amdgcn-amd-amdhsa <SOURCE FILES>
 ```

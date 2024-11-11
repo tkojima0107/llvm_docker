@@ -1,6 +1,6 @@
 # Docker images for LLVM
 This repositoy has Dockerfiles in `llvm<VERSION>-<DISTRIBUTION>` folders.
-The pre-built images can be pull from Docker Hub.
+The pre-built images can be pulled from Docker Hub.
 ```
 docker pull tkojima0107/llvm:<VERSION>-<DISTRIBUTION>
 ```

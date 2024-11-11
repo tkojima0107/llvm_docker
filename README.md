@@ -15,8 +15,9 @@ docker pull tkojima0107/llvm:<VERSION>-<DISTRIBUTION>
 * LLVM 18.1.8
 
 ## Base distribution
-* CentOS 8
+* CentOS 8 (except for nvidia images)
 * Ubuntu 20.04
+* Rocky Linux 8 (only for nvidia images)
 
 
 ## LLVM with OpenMP offloading libraries for NVIDIA GPUs
@@ -38,16 +39,16 @@ clang++ -O3 -Xopenmp-target -march=<GPU ARCH> -fopenmp -fopenmp-targets=nvptx64 
 
 Available GPU architectures are follows:
 
-| LLVM version | Supported GPU architectures |
-|:------------:|:---------------------------|
-| 12.0.1       | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80 |
-| 13.0.1       | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80 |
-| 14.0.6       | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86 |
-| 15.0.7       | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86 |
-| 16.0.6       | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86, sm_89, sm_90 |
-| 17.0.6       | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86, sm_89, sm_90 |
-| 18.1.8       | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86, sm_89, sm_90 |
-
+| LLVM version | Supported CUDA version | Supported GPU architectures |
+|:------------:|:-------------------:|:---------------------------|
+| 12.0.1       | <=11.0 | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80 |
+| 13.0.1       | <=11.2 |  sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80 |
+| 14.0.6       | <=11.5 | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86 |
+| 15.0.7       | <=11.5 | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86 |
+| 16.0.6       | <=11.5 | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86 (sm_89, sm_90)[^1]  |
+| 17.0.6       | <=11.8 | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86, sm_89, sm_90 |
+| 18.1.8       | <=12.3 | sm_35, sm_37, sm_50, sm_52, sm_53, sm_60, sm_61, sm_62, sm_70, sm_72, sm_75, sm_80, sm_86, sm_89, sm_90 |
+[^1]: CUDA 11.5 is fully supported, but that version does not support sm_89 and sm_90.
 
 ## LLVM with OpenMP offloading libraries for AMD GPUs
 This repository also has images for OpenMP offloading with AMD GPU.

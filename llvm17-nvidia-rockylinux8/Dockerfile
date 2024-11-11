@@ -55,7 +55,7 @@ RUN echo "/opt/llvm17.0.6/lib" >> /etc/ld.so.conf.d/20-llvm.conf
 RUN { \
         echo "/opt/gcc-13.2.0/lib"; \
         echo "/opt/gcc-13.2.0/lib64"; \
-        } >> /etc/ld.so.conf.d/10-gcc-12.conf
+        } >> /etc/ld.so.conf.d/10-gcc-13.conf
 RUN rm /etc/ld.so.cache
 ENV PATH /opt/llvm17.0.6/bin:${PATH}
 WORKDIR /root

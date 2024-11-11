@@ -19,6 +19,8 @@ docker pull tkojima0107/llvm:<VERSION>-<DISTRIBUTION>
 * Ubuntu 20.04
 * Rocky Linux 8 (only for nvidia images)
 
+The nvidia images based on CentOS 8 are no longer available.
+This repository and Docker Hub repository currently keep *-nvidia-centos8* images, but they are deprecated.
 
 ## LLVM with OpenMP offloading libraries for NVIDIA GPUs
 In addition to the above images, this repository has images based on Nvidia cuda images for OpenMP offloading.
@@ -32,7 +34,7 @@ docker run -it --runtime=nvidia tkojima0107/llvm:<VERSION>-nvidia-<DISTRIBUTION>
 
 For compiling an application,
 ```
-clang++ -O3 -Xopenmp-target -march=<GPU ARCH> -fopenmp -fopenmp-targets=nvptx64 --cuda-path=/usr/local/cuda-11.2 <SOURCE FILES>
+clang++ -O3 -Xopenmp-target -march=<GPU ARCH> -fopenmp -fopenmp-targets=nvptx64 <SOURCE FILES>
 ```
 
 `<GPU ARCH>` is named *SM_XY*, where X and Y correspond to [compute capability](https://developer.nvidia.com/cuda-gpus) *X.Y*.

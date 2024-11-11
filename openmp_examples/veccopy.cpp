@@ -2,7 +2,7 @@
 #include <omp.h>
 
 #ifndef N
-#define N (1<<27) //need 1GB in total
+#define N (1<<29) //need 1GB in total
 #endif
 
 int main()

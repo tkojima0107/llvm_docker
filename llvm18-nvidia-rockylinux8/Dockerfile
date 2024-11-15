@@ -60,7 +60,7 @@ RUN { \
         echo "/opt/gcc-13.3.0/lib"; \
         echo "/opt/gcc-13.3.0/lib64"; \
         } >> /etc/ld.so.conf.d/10-gcc-13.conf
-RUN rm /etc/ld.so.cache
+RUN ldconfig
 ENV PATH /opt/llvm18.1.8/bin:${PATH}
 ENV LIBRARY_PATH="/opt/llvm18.1.8/lib/x86_64-unknown-linux-gnu"
 WORKDIR /root

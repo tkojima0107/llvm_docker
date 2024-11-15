@@ -62,7 +62,7 @@ RUN { \
         echo "/opt/gcc-12.1.0/lib"; \
         echo "/opt/gcc-12.1.0/lib64"; \
         } >> /etc/ld.so.conf.d/10-gcc-12.conf
-RUN rm /etc/ld.so.cache
+RUN ldconfig
 ENV PATH /opt/llvm15.0.7/bin:${PATH}
 ENV LIBRARY_PATH="/opt/llvm15.0.7/lib/x86_64-unknown-linux-gnu"
 WORKDIR /root

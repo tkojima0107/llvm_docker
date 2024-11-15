@@ -57,7 +57,7 @@ RUN { \
         echo "/opt/gcc-11.3.0/lib"; \
         echo "/opt/gcc-11.3.0/lib64"; \
         } >> /etc/ld.so.conf.d/10-gcc-11.conf
-RUN rm /etc/ld.so.cache
+RUN ldconfig
 ENV PATH /opt/llvm13.0.1/bin:${PATH}
 WORKDIR /root
 

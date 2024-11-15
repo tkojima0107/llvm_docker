@@ -42,13 +42,18 @@ RUN git clone -b llvmorg-16.0.6 https://github.com/llvm/llvm-project.git \
 		&& rm -rf /tmp/llvm-project
 
 ENV LD_LIBRARY_PATH=
-RUN echo "/opt/llvm16.0.6/lib" >> /etc/ld.so.conf.d/20-llvm.conf
+RUN { \
+        echo "/opt/llvm16.0.6/lib"; \
+        echo "/opt/llvm16.0.6/lib/x86_64-unknown-linux-gnu"; \
+        } >> /etc/ld.so.conf.d/20-llvm.conf
+
 RUN { \
         echo "/opt/gcc-13.1.0/lib"; \
         echo "/opt/gcc-13.1.0/lib64"; \
         } >> /etc/ld.so.conf.d/10-gcc-13.conf
 RUN ldconfig
 ENV PATH /opt/llvm16.0.6/bin:${PATH}
+ENV LIBRARY_PATH="/opt/llvm16.0.6/lib/x86_64-unknown-linux-gnu"
 WORKDIR /root
 
 CMD ["/bin/bash", "--login"]

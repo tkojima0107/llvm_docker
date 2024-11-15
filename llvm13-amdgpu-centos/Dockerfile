@@ -42,8 +42,7 @@ RUN git clone -b llvmorg-13.0.1 https://github.com/llvm/llvm-project.git \
 		&& cmake --install . \
         && mkdir -p /tmp/llvm-project/omp-build/install  \
         && cd /tmp/llvm-project/omp-build \
-        && LD_LIBRARY_PATH=/usr/local/cuda/compat:${LD_LIBRARY_PATH} \
-           PATH=/opt/llvm13.0.1/bin:${PATH} \
+        && PATH=/opt/llvm13.0.1/bin:${PATH} \
            CC=clang CXX=clang++ cmake -Wno-dev -G Ninja -DCMAKE_BUILD_TYPE=Release \
 		   -DLIBOMPTARGET_AMDGCN_GFXLIST="gfx700;gfx701;gfx801;gfx803;gfx805;gfx810;gfx900;gfx902;gfx904;gfx906;gfx908;gfx909;gfx90c;gfx1010;gfx1011\
 ;gfx1012;gfx1013;gfx1030;gfx1031;gfx1032;gfx1033;gfx1034;gfx1035" \

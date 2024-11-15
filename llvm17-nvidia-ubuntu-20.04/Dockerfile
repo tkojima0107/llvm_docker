@@ -52,7 +52,7 @@ RUN git clone -b llvmorg-17.0.6 https://github.com/llvm/llvm-project.git \
 		&& LD_LIBRARY_PATH=/usr/local/cuda/compat:${LD_LIBRARY_PATH} \
 		   PATH=/opt/llvm17.0.6/bin:${PATH} \
 		   CC=clang CXX=clang++ cmake -Wno-dev -G Ninja -DCMAKE_BUILD_TYPE=Release \
-			-DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES=all \
+			-DLIBOMPTARGET_DEVICE_ARCHITECTURES=all \
 		   -DLLVM_ENABLE_PROJECTS="clang;openmp" ../llvm \
 		   -DCMAKE_INSTALL_PREFIX=./install \
 	   	&& cmake --build . \
@@ -61,13 +61,18 @@ RUN git clone -b llvmorg-17.0.6 https://github.com/llvm/llvm-project.git \
 		&& rm -rf /tmp/llvm-project
 
 ENV LD_LIBRARY_PATH=/opt/gcc-13.2.0/lib:/opt/gcc-13.2.0/lib64
-RUN echo "/opt/llvm17.0.6/lib" >> /etc/ld.so.conf.d/20-llvm.conf
+RUN { \
+        echo "/opt/llvm17.0.6/lib"; \
+        echo "/opt/llvm17.0.6/lib/x86_64-unknown-linux-gnu"; \
+        } >> /etc/ld.so.conf.d/20-llvm.conf
+
 RUN { \
         echo "/opt/gcc-13.2.0/lib"; \
         echo "/opt/gcc-13.2.0/lib64"; \
         } >> /etc/ld.so.conf.d/10-gcc-13.conf
 RUN rm /etc/ld.so.cache
 ENV PATH /opt/llvm17.0.6/bin:${PATH}
+ENV LIBRARY_PATH="/opt/llvm17.0.6/lib/x86_64-unknown-linux-gnu"
 WORKDIR /root
 
 CMD ["/bin/bash", "--login"]

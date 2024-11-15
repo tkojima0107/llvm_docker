@@ -46,8 +46,7 @@ RUN git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
 		&& cmake --install . \
         && mkdir -p /tmp/llvm-project/omp-build/install  \
         && cd /tmp/llvm-project/omp-build \
-        && LD_LIBRARY_PATH=/usr/local/cuda/compat:${LD_LIBRARY_PATH} \
-           PATH=/opt/llvm14.0.6/bin:${PATH} \
+        && PATH=/opt/llvm14.0.6/bin:${PATH} \
            CC=clang CXX=clang++ cmake -Wno-dev -G Ninja -DCMAKE_BUILD_TYPE=Release \
 		   -DLIBOMPTARGET_AMDGCN_GFXLIST="gfx700;gfx701;gfx801;gfx803;gfx805;gfx810;gfx900;gfx902;gfx904;gfx906;gfx908;gfx909;gfx90c;gfx1010;gfx1011;gfx1012;gfx1013;gfx1030;gfx1031;gfx1032;gfx1033;gfx1034;gfx1035" \
            -DLLVM_ENABLE_PROJECTS="clang;openmp" ../llvm \
@@ -58,7 +57,11 @@ RUN git clone -b llvmorg-14.0.6 https://github.com/llvm/llvm-project.git \
 		&& rm -rf /tmp/llvm-project
 
 ENV LD_LIBRARY_PATH=
-RUN echo "/opt/llvm14.0.6/lib" >> /etc/ld.so.conf.d/20-llvm.conf
+RUN { \
+        echo "/opt/llvm14.0.6/lib"; \
+        echo "/opt/llvm14.0.6/lib/x86_64-unknown-linux-gnu"; \
+        } >> /etc/ld.so.conf.d/20-llvm.conf
+
 RUN { \
         echo "/opt/rocm/lib"; \
         echo "/opt/rocm/lib64"; \
@@ -68,6 +71,6 @@ RUN { \
         echo "/opt/gcc-12.1.0/lib64"; \
         } >> /etc/ld.so.conf.d/10-gcc-12.conf
 RUN ldconfig
-ENV LIBRARY_PATH="/opt/rocm/lib"
+ENV LIBRARY_PATH="/opt/llvm14.0.6/lib/x86_64-unknown-linux-gnu;/opt/rocm/lib"
 ENV PATH /opt/llvm14.0.6/bin:/opt/rocm/bin:${PATH}
 WORKDIR /root

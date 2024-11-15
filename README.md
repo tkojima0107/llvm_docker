@@ -37,6 +37,11 @@ For compiling an application,
 clang++ -O3 -Xopenmp-target -march=<GPU ARCH> -fopenmp -fopenmp-targets=nvptx64 <SOURCE FILES>
 ```
 
+After LLVM 16, the following command also works:
+```
+clang++ -O3 --offload_arch=<GPU ARCH> -fopenmp <SOURCE FILES>
+```
+
 `<GPU ARCH>` is named *SM_XY*, where X and Y correspond to [compute capability](https://developer.nvidia.com/cuda-gpus) *X.Y*.
 
 Available GPU architectures are follows:
@@ -58,6 +63,21 @@ Available GPU architectures are follows:
 This repository also has images for OpenMP offloading with AMD GPU.
 In each image, [ROCm toolkit](https://rocmdocs.amd.com/en/latest/) is installed.
 
+LLVM 15 or later versions changed the default compiler driver for OpenMP offloading to `openmp-new-driver`.
+The new driver no longer needs bitcode library built from the llvm source tree.
+Instead, the new driver requires ROCm device library for linking.
+Thus, the Dockerfile for the versions later than LLVM 15 does not build the bitcode library.
+However, LLVM 15 can still use the legacy driver by specifying `-fno-openmp-new-driver` option so that building the bitcode library is kept in its image.
+
+### Known issues with LLVM 15-18
+If multiple and different GPUs are installed in the host machine,
+the OpenMP offloading library might regards compiled binary as an incompatible one even if specifying the correct GPU architecture.
+It can be solved by setting `ROCR_VISIBLE_DEVICES` environment variable to show only the target GPU to the library.
+
+This issue does not occur with LLVM in ROCm developed by AMD.
+LLVM 19 seems to have fixed this issue.
+
+
 ### Usage Example
 For running a container,
 ```
@@ -66,7 +86,12 @@ docker run -it --device=/dev/kfd --device=/dev/dri --security-opt seccomp=unconf
 
 For compiling an application,
 ```
-clang++ -O3 -Xopenmp-target=amdgcn-amd-amdhsa -march=<GPU ARCH> -fopenmp -fopenmp-targets=amdgcn-amd-amdhsa <SOURCE FILES>
+clang++ -O3 -Xopenmp-target -march=<GPU ARCH> -fopenmp -fopenmp-targets=amdgcn-amd-amdhsa <SOURCE FILES>
+```
+
+After LLVM 16, the following command also works:
+```
+clang++ -O3 --offload-arch=<GPU ARCH> -fopenmp <SOURCE FILES>
 ```
 
 Available GPU architectures are follows:
@@ -77,8 +102,8 @@ Available GPU architectures are follows:
 | 14.0.6       | gfx700, gfx701, gfx801, gfx803, gfx805, gfx810, gfx900, gfx902, gfx904, gfx906, gfx908, gfx909, gfx90c, gfx1010, gfx1011, gfx1012, gfx1013, gfx1030, gfx1031|
 | 15.0.7       | gfx700, gfx701, gfx801, gfx803, gfx805, gfx810, gfx900, gfx902, gfx904, gfx906, gfx908, gfx909, gfx90c, gfx1010, gfx1011, gfx1012, gfx1013, gfx1030, gfx1031, gfx1032, gfx1033, gfx1034, gfx1035, gfx1036 |
 | 16.0.6       | gfx700, gfx701, gfx801, gfx803, gfx805, gfx810, gfx900, gfx902, gfx904, gfx906, gfx908, gfx909, gfx90c, gfx1010, gfx1011, gfx1012, gfx1013, gfx1030, gfx1031, gfx1032, gfx1033, gfx1034, gfx1035, gfx1036, gfx1100, gfx1101, gfx1102, gfx1103 |
-| 17.0.6       |  gfx700, gfx701, gfx801, gfx803, gfx805, gfx810, gfx900, gfx902, gfx904, gfx906, gfx908, gfx909, gfx90c, gfx1010, gfx1011, gfx1012, gfx1013, gfx1030, gfx1031, gfx1032, gfx1033, gfx1034, gfx1035, gfx1036, gfx1100, gfx1101, gfx1102, gfx1103, gfx1150, gfx1151|
-| 18.1.8       | gfx700, gfx701, gfx801, gfx803, gfx805, gfx810, gfx900, gfx902, gfx904, gfx906, gfx908, gfx909, gfx90c, gfx1010, gfx1011, gfx1012, gfx1013, gfx1030, gfx1031, gfx1032, gfx1033, gfx1034, gfx1035, gfx1036, gfx1100, gfx1101, gfx1102, gfx1103, gfx1150, gfx1151|
+| 17.0.6       |  gfx700, gfx701, gfx801, gfx803, gfx900, gfx902, gfx906, gfx908, gfx90a, gfx90c, gfx940, gfx1010, gfx1030, gfx1031, gfx1032, gfx1033, gfx1034, gfx1035, gfx1036, gfx1100, gfx1101, gfx1102, gfx1103, gfx1150, gfx1151|
+| 18.1.8       | gfx700, gfx701, gfx801, gfx803, gfx900, gfx902, gfx906, gfx908, gfx90a, gfx90c, gfx940, gfx941, gfx942, gfx1010, gfx1030, gfx1031, gfx1032, gfx1033, gfx1034, gfx1035, gfx1036, gfx1100, gfx1101, gfx1102, gfx1103, gfx1150, gfx1151 |
 
 
 The following command will tell you which architecture your GPU is:
@@ -92,4 +117,6 @@ See [openmp_exmaples](openmp_examples)
 ## Other images
 * `llvm12-flang-centos`
 LLVM12 with [flang](https://github.com/flang-compiler/flang), a fortran compiler.
+
+Starting with LLVM 15, `flang-new` command is available for Fortran code generation, which can be built without any externel projects.
 

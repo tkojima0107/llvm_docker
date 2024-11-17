@@ -12,7 +12,7 @@ RUN dnf -y --enablerepo=powertools install ninja-build
 RUN dnf -y install python3
 RUN dnf -y install bzip2 flex
 COPY rocm.repo  /etc/yum.repos.d/rocm.repo
-RUN dnf -y update && dnf -y install rocm-hip-libraries
+RUN dnf -y update && dnf -y install hsa-rocr hsa-rocr-devel
 
 WORKDIR /tmp
 RUN wget https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-11.3.0.tar.gz \

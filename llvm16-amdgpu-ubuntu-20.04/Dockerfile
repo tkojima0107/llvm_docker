@@ -1,21 +1,20 @@
-FROM centos:8
+FROM ubuntu:20.04
 
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*
-RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*
-RUN dnf -y update --exclude cuda* --nogpgcheck
-RUN dnf -y install gcc gcc-c++
-RUN dnf -y install wget
-RUN dnf -y install git
-RUN dnf -y install cmake
-RUN dnf -y install elfutils-libelf-devel libffi-devel
-RUN dnf -y --enablerepo=powertools install ninja-build
-RUN dnf -y install python3
-RUN dnf -y install bzip2 flex
-RUN dnf -y install epel-release
-COPY rocm.repo  /etc/yum.repos.d/rocm.repo
-RUN dnf -y update && dnf -y --enablerepo=powertools \
-        --enablerepo=epel \
-        install hsa-rocr hsa-rocr-devel rocm-device-libs5.6.1
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get -y update
+RUN apt-get -y install gcc g++
+RUN apt-get -y install git
+RUN apt-get -y install cmake
+RUN apt-get -y install python3
+RUN apt-get -y install ninja-build
+RUN apt-get -y install python3-distutils
+RUN apt-get -y install libelf-dev libffi-dev
+RUN apt-get -y install bzip2 flex wget
+RUN apt-get -y install libnuma-dev gnupg2
+RUN wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | apt-key add -
+COPY rocm.list /etc/apt/sources.list.d/rocm.list
+RUN apt-get -y update
+RUN apt-get -y install hsa-rocr5.6.1 hsa-rocr-dev5.6.1 rocm-device-libs5.6.1
 
 WORKDIR /tmp
 

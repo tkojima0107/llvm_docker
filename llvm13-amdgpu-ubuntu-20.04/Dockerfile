@@ -14,7 +14,7 @@ RUN apt-get -y install libnuma-dev gnupg2
 RUN wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | apt-key add -
 COPY rocm.list /etc/apt/sources.list.d/rocm.list
 RUN apt-get -y update
-RUN apt-get -y install rocm-hip-libraries
+RUN apt-get -y install hsa-rocr5.2.0 hsa-rocr-dev5.2.0
 
 WORKDIR /tmp
 RUN wget https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-11.3.0.tar.gz \

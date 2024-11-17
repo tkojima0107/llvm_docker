@@ -15,7 +15,7 @@ RUN dnf -y install epel-release
 COPY rocm.repo  /etc/yum.repos.d/rocm.repo
 RUN dnf -y update && dnf -y --enablerepo=powertools \
         --enablerepo=epel \
-        install rocm-hip-libraries hsa-rocr-devel rocm-device-libs6.1.3
+        install hsa-rocr hsa-rocr-devel rocm-device-libs6.1.3
 
 WORKDIR /tmp
 
@@ -73,3 +73,5 @@ RUN ldconfig
 ENV LIBRARY_PATH="/opt/llvm18.1.8/lib/x86_64-unknown-linux-gnu;/opt/rocm/lib"
 ENV PATH /opt/llvm18.1.8/bin:/opt/rocm/bin:${PATH}
 WORKDIR /root
+
+CMD ["/bin/bash", "--login"]

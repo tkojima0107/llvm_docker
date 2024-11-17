@@ -48,7 +48,7 @@ RUN git clone -b llvmorg-13.0.1 https://github.com/llvm/llvm-project.git \
 		&& find /tmp/llvm-project/omp-build/install -name libomptarget* -exec cp {} /opt/llvm13.0.1/lib/ \; \
 		&& rm -rf /tmp/llvm-project
 
-ENV LD_LIBRARY_PATH=/opt/gcc-11.3.0/lib:/opt/gcc-11.3.0/lib64
+ENV LD_LIBRARY_PATH=
 RUN echo "/opt/llvm13.0.1/lib" >> /etc/ld.so.conf.d/20-llvm.conf
 RUN { \
         echo "/opt/gcc-11.3.0/lib"; \
@@ -58,4 +58,7 @@ RUN ldconfig
 ENV PATH /opt/llvm13.0.1/bin:${PATH}
 WORKDIR /root
 
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash", "--login"]

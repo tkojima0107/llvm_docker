@@ -65,4 +65,7 @@ ENV PATH /opt/llvm14.0.6/bin:${PATH}
 ENV LIBRARY_PATH="/opt/llvm14.0.6/lib/x86_64-unknown-linux-gnu"
 WORKDIR /root
 
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash", "--login"]

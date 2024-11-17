@@ -52,7 +52,7 @@ RUN git clone -b llvmorg-16.0.6 https://github.com/llvm/llvm-project.git \
 		&& find /tmp/llvm-project/omp-build/install -name libomptarget* -exec cp {} /opt/llvm16.0.6/lib/ \; \
 		&& rm -rf /tmp/llvm-project
 
-ENV LD_LIBRARY_PATH=/opt/gcc-13.1.0/lib:/opt/gcc-13.1.0/lib64
+ENV LD_LIBRARY_PATH=
 RUN { \
         echo "/opt/llvm16.0.6/lib"; \
         echo "/opt/llvm16.0.6/lib/x86_64-unknown-linux-gnu"; \
@@ -67,4 +67,7 @@ ENV PATH /opt/llvm16.0.6/bin:${PATH}
 ENV LIBRARY_PATH="/opt/llvm16.0.6/lib/x86_64-unknown-linux-gnu"
 WORKDIR /root
 
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash", "--login"]
